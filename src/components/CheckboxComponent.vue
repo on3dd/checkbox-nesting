@@ -1,5 +1,5 @@
 <template>
-  <div class="checkbox">
+  <div class="checkbox" :class="styleObject">
     <div class="property">
       <span class="key">Id:</span>
       <span class="value">{{checkbox.id}}</span>
@@ -45,6 +45,15 @@
       return this.checkbox.checked && this.isChildrenAreChecked(this.checkbox.id)
     }
 
+    get styleObject() {
+      return new Object({
+        'checkbox--true': this.checkbox.checked && this.isChecked,
+        'checkbox--indeterminate': !this.checkbox.checked || !this.isChecked,
+        'checkbox--false': !this.checkbox.checked && !this.isChecked,
+        // 'checkbox': true
+      })
+    }
+
     created() {
       // console.log(this.checkbox.id, this.isChildrenAreChecked(this.checkbox.id))
     }
@@ -59,6 +68,24 @@
     line-height: 1.5em;
     border: 1px solid #2c3e50;
     border-radius: 20px;
+    background-color: #fff;
+    transition: background-color ease-out .1s;
+
+    &--true {
+      border-color: #2ecc71;
+    }
+
+    &--indeterminate {
+      border-color: #f1c40f;
+    }
+
+    &--false {
+      border-color: #e74c3c;
+    }
+
+    &:hover {
+      background-color: rgba(0,0,0,.05);
+    }
 
     .property {
       &--checkbox {
