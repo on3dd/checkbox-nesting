@@ -13,9 +13,14 @@
       <span class="value">{{checkbox.name}}</span>
     </div>
     <div class="property property--checkbox">
-      <span class="key">Checked:</span>
-      <span class="value">{{checkbox.checked}}</span>
-      <input type="checkbox" :checked="checkbox.checked"/>
+      <span class="key">Self Checked:</span>
+      <input id="checkbox-1" type="checkbox" :checked="checkbox.checked" @change="checkbox.checked = !checkbox.checked"/>
+      <label for="checkbox-1">{{checkbox.checked}}</label>
+    </div>
+    <div class="property property--checkbox">
+      <span class="key">Actual Checked:</span>
+      <input id="checkbox-2" type="checkbox" :checked="isChecked" readonly disabled/>
+      <label for="checkbox-2">{{isChecked}}</label>
     </div>
 
     <Checkboxes :entrypoint="checkbox.id"/>
@@ -23,7 +28,8 @@
 </template>
 
 <script lang="ts">
-  import {Component, Prop, Vue} from 'vue-property-decorator'
+  import {Component, Prop, Model, Vue} from 'vue-property-decorator'
+  import {Getter} from 'vuex-class'
   import {Checkbox} from "@/checkbox";
   import Checkboxes from "@/components/Checkboxes.vue";
 
@@ -32,6 +38,16 @@
   })
   export default class CheckboxComponent extends Vue {
     @Prop({type: Object as () => Checkbox}) checkbox!: Checkbox;
+
+    @Getter isChildrenAreChecked!: (arg0: number) => boolean;
+
+    get isChecked() {
+      return this.checkbox.checked && this.isChildrenAreChecked(this.checkbox.id)
+    }
+
+    created() {
+      // console.log(this.checkbox.id, this.isChildrenAreChecked(this.checkbox.id))
+    }
   }
 </script>
 
@@ -60,7 +76,7 @@
     input[type=checkbox] {
       height: 16px;
       width: 16px;
-      margin: 0 0 0 5px;
+      margin: 0 2px 0 0;
     }
   }
 </style>

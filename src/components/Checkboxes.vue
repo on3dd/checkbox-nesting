@@ -22,7 +22,7 @@
 
     async created() {
       await this.fetchCheckboxes();
-      console.log(this.checkboxesByParentId(this.entrypoint));
+      // console.log(this.entrypoint, this.checkboxesByParentId(this.entrypoint));
     }
   }
 </script>

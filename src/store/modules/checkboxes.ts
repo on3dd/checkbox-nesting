@@ -26,11 +26,13 @@ export default {
     }
   },
   getters: {
-    getCheckboxes(state: CheckboxesState): Checkbox[] {
-      return state.checkboxes
-    },
+    getCheckboxes: (state: CheckboxesState) => state.checkboxes,
     checkboxesByParentId: (state: CheckboxesState) => (id: number | null) => {
-      return state.checkboxes.filter((el => el.parentId === id))
+      return state.checkboxes.filter(el => el.parentId === id)
+    },
+    isChildrenAreChecked: (state: CheckboxesState) => (id: number) => {
+      const idx = state.checkboxes.filter(el => el.parentId === id).findIndex(el => el.checked === false)
+      return idx === -1
     }
   }
 }
